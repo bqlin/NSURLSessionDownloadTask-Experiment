@@ -156,7 +156,8 @@ static id _sharedManager = nil;
 	if (self.progressHandler) {
 		self.progressHandler(progress);
 	}
-	NSLog(@"progress: %@", [NSNumberFormatter localizedStringFromNumber:@(progress) numberStyle:NSNumberFormatterPercentStyle]);
+	NSString *progressDescription = [NSNumberFormatter localizedStringFromNumber:@(progress) numberStyle:NSNumberFormatterPercentStyle];
+	NSLog(@"progress: %@\t\t%lld/%lld", progressDescription, totalBytesWritten, totalBytesExpectedToWrite);
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {

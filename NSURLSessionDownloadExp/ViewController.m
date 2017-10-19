@@ -12,6 +12,7 @@
 @interface ViewController ()
 
 @property (weak, nonatomic) IBOutlet UIProgressView *downloadProgressView;
+@property (nonatomic, assign) NSInteger count;
 
 @end
 
@@ -40,9 +41,12 @@
 }
 
 - (IBAction)startDownload:(UIBarButtonItem *)sender {
+	__weak typeof(self) weakSelf = self;
 	DownloadManager *manager = [DownloadManager sharedManager];
 	[manager prepareWithCompletion:^{
 		[manager startDownload];
+		weakSelf.count ++;
+		NSLog(@"download_%zd", weakSelf.count);
 	}];
 }
 

@@ -95,6 +95,9 @@ static id _sharedManager = nil;
 	[self.downloadTask cancelByProducingResumeData:^(NSData * _Nullable resumeData) {
 		weakSelf.resumeData = resumeData;
 		[weakSelf reset];
+		// 写入到文件，以供检查
+		NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"resumeData.plist"];
+		[resumeData writeToFile:path atomically:YES];
 	}];
 }
 

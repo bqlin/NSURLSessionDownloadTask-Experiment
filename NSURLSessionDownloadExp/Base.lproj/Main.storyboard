@@ -1,26 +1,90 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Jz0-tF-SKU">
+    <device id="retina3_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--断点下载测试-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gG-Cn-QFu">
+                                <rect key="frame" x="0.0" y="436" width="320" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Kyt-5a-1ga"/>
+                                    <barButtonItem title="开始" id="XY3-Cf-FIP">
+                                        <connections>
+                                            <action selector="startDownload:" destination="BYZ-38-t0r" id="XjZ-fH-TBq"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ozB-y8-KLa"/>
+                                    <barButtonItem title="停止" id="LKg-VF-Iaw">
+                                        <connections>
+                                            <action selector="stopDownload:" destination="BYZ-38-t0r" id="hLn-i1-X5C"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="T1U-5c-cAm"/>
+                                </items>
+                            </toolbar>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mCj-ex-J2G">
+                                <rect key="frame" x="0.0" y="434" width="320" height="2"/>
+                            </progressView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="mCj-ex-J2G" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8G3-Gc-yKv"/>
+                            <constraint firstItem="5gG-Cn-QFu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="BWt-39-BTa"/>
+                            <constraint firstAttribute="trailing" secondItem="mCj-ex-J2G" secondAttribute="trailing" id="Bs3-So-tLU"/>
+                            <constraint firstAttribute="trailing" secondItem="5gG-Cn-QFu" secondAttribute="trailing" id="Ud0-y5-kS1"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="5gG-Cn-QFu" secondAttribute="bottom" id="VZm-iM-M0t"/>
+                            <constraint firstItem="5gG-Cn-QFu" firstAttribute="top" secondItem="mCj-ex-J2G" secondAttribute="bottom" id="uU6-pf-3PJ"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="断点下载测试" id="ZWt-fb-980">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="kgb-S5-Tsm">
+                            <connections>
+                                <action selector="clear:" destination="BYZ-38-t0r" id="mEw-iK-FTw"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="downloadProgressView" destination="mCj-ex-J2G" id="eRr-xL-Bk6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-225" y="153"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ciB-xF-h7S">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Jz0-tF-SKU" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xsH-Ne-7Bf">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="7w4-xw-NLF"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yOM-ar-lAt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-225" y="-61"/>
         </scene>
     </scenes>
 </document>

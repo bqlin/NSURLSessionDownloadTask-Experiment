@@ -93,11 +93,13 @@ static id _sharedManager = nil;
 - (void)stopDownload {
 	__weak typeof(self) weakSelf = self;
 	[self.downloadTask cancelByProducingResumeData:^(NSData * _Nullable resumeData) {
-		weakSelf.resumeData = resumeData;
+		if (!resumeData) return;
+		// 移除 NSURLSessionResumeByteRange
+		NSMutableDictionary *resumeDic = [self dictionaryWithData:resumeData].mutableCopy;
+		[resumeDic removeObjectForKey:@"NSURLSessionResumeByteRange"];
+		weakSelf.resumeData = [self dataWithDictionary:resumeDic];
+		
 		[weakSelf reset];
-		// 写入到文件，以供检查
-		NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"resumeData.plist"];
-		[resumeData writeToFile:path atomically:YES];
 	}];
 }
 
@@ -161,7 +163,7 @@ static id _sharedManager = nil;
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {
-	
+	NSLog(@"%@ - %lld - %lld", downloadTask, fileOffset, expectedTotalBytes);
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
@@ -198,6 +200,29 @@ static id _sharedManager = nil;
 	}
 	
 	NSLog(@"All tasks are finished");
+}
+
+#pragma mark - tool
+
+- (NSDictionary *)dictionaryWithData:(NSData *)data {
+	CFPropertyListFormat plistFormat = kCFPropertyListXMLFormat_v1_0;
+	CFPropertyListRef plist = CFPropertyListCreateWithData(kCFAllocatorDefault, (__bridge CFDataRef)data, kCFPropertyListImmutable, &plistFormat, NULL);
+	if ([(__bridge id)plist isKindOfClass:[NSDictionary class]]) {
+		return (__bridge NSDictionary *)plist;
+	} else {
+		CFRelease(plist);
+		return nil;
+	}
+}
+
+- (NSData *)dataWithDictionary:(NSDictionary *)dic {
+	CFDataRef data = CFPropertyListCreateData(kCFAllocatorDefault, (__bridge CFPropertyListRef)dic, kCFPropertyListXMLFormat_v1_0, kCFPropertyListImmutable, NULL);
+	if ([(__bridge id)data isKindOfClass:[NSData class]]) {
+		return (__bridge NSData *)data;
+	} else {
+		CFRelease(data);
+		return nil;
+	}
 }
 
 @end
